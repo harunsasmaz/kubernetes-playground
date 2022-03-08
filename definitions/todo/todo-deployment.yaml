@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: todo
+  template:
+    metadata:
+      labels:
+        app:  todo
+    spec:
+      imagePullSecrets:
+      - name: gcr-access-token
+      containers:
+      - name: todo
+        image: eu.gcr.io/idyllic-silicon-343409/todo:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+             cpu: "1"
+             memory: "1Gi"
+          requests:
+             cpu: "1"
+             memory: "1Gi"
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /todos/health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+          - name: REDIS_IP
+            value: redis:6379
+          - name: POSTGRES_USERNAME
+            value: postgres  
+          - name: POSTGRES_DB
+            value: postgres
+          - name: POSTGRES_IP
+            value: postgres:5432  
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pg-password
+                key: password 
+          - name: PORT
+            value: "8000"

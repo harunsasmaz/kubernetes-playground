@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: hello
+  template:
+    metadata:
+      labels:
+        app:  hello
+    spec:
+      imagePullSecrets:
+      - name: gcr-access-token
+      containers:
+      - name: hello
+        image: eu.gcr.io/idyllic-silicon-343409/hello:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+             cpu: "1"
+             memory: "1Gi"
+          requests:
+             cpu: "1"
+             memory: "1Gi"
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+          - name: PORT
+            value: "8000"
