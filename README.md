@@ -22,6 +22,12 @@ Login to your GCP account through `gcloud`:
 gcloud auth application-default login
 ```
 
+Configure Docker to access private registry:
+
+```
+gcloud auth configure-docker
+```
+
 ## Create a cluster
 
 Before you start, make sure you set variables according to your project in `variables.tf`
@@ -42,6 +48,16 @@ This will set kubectl to access your cluster. To verify:
 
 ```
 kubectl cluster-info
+```
+
+### Allow Kubernetes to Pull Images from GCR
+
+```
+kubectl create secret docker-registry gcr-access-token \
+--docker-server=eu.gcr.io \
+--docker-username=oauth3accesstoken \
+--docker-password="$(gcloud auth print-access-token)" \
+--docker-email=your@email.com
 ```
 
 ## Deploy Hello Service
@@ -81,6 +97,13 @@ kubectl get pods
 ```
 
 If the status of the pod with name postgres is running, then it works properly.
+
+6. Use secrets for password protection
+
+```
+kubectl create secret generic pg-password \
+--from-literal=password=<YOUR_PASSWORD>
+```
 
 ### Deploy Redis
 
