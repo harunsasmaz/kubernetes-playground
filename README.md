@@ -1,5 +1,8 @@
 # Kubernetes Playground
 
+Playground to learn deployment a web service on a cluster.
+For more details and motivation, please see [my post](https://harunsasmaz.com/en/projects/kubernetes-playground/)
+
 ## Before you start
 
 Make sure you have a Google Cloud Platform (GCP) account and then:
