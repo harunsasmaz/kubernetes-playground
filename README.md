@@ -1,7 +1,7 @@
 # Kubernetes Playground
 
 Playground to learn deployment a web service on a cluster.
-For more details and motivation, please see [my post](https://harunsasmaz.com/en/projects/kubernetes-playground/)
+For more details and motivation, check [my post](https://harunsasmaz.com/en/projects/kubernetes-playground/)
 
 ## Before you start
 
